@@ -16,11 +16,11 @@
   "iconUrl": "https://dhamma.gift/assets/img/pwa-bold-monocolor-512.png",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
-    "path": "/mnt/c/soft/twa/android.keystore",
+    "path": "/var/www/dg-twa/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "1.0.2",
-  "appVersionCode": 6,
+  "appVersionName": "1.0.3",
+  "appVersionCode": 7,
   "shortcuts": [
     {
       "name": "DG Read",
@@ -50,11 +50,6 @@
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://dhamma.gift/manifest.php",
   "fallbackType": "customtabs",
-  "features": {
-    "playBilling": {
-      "enabled": true
-    }
-  },
   "alphaDependencies": {
     "enabled": true
   },

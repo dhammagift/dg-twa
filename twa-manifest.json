@@ -19,8 +19,8 @@
     "path": "/mnt/c/soft/twa/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "1",
-  "appVersionCode": 1,
+  "appVersionName": "1.0.2",
+  "appVersionCode": 6,
   "shortcuts": [
     {
       "name": "DG Read",
@@ -75,5 +75,5 @@
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
   "protocolHandlers": [],
-  "appVersion": "1"
+  "appVersion": "1.0.2"
 }

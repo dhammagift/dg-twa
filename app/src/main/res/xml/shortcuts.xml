@@ -1,6 +1,6 @@
 <shortcuts xmlns:android='http://schemas.android.com/apk/res/android'>
     <shortcut android:shortcutId='shortcut0' android:enabled='true' android:icon='@drawable/shortcut_0' android:shortcutShortLabel='@string/shortcut_short_name_0' android:shortcutLongLabel='@string/shortcut_name_0'>
-        <intent android:action='android.intent.action.MAIN' android:targetPackage='gift.dhamma.twa' android:targetClass='gift.dhamma.twa.LauncherActivity' android:data='https://dhamma.gift/read.php' />
+        <intent android:action='android.intent.action.MAIN' android:targetPackage='gift.dhamma.twa' android:targetClass='gift.dhamma.twa.LauncherActivity' android:data='https://dhamma.gift/toc' />
         <categories android:name='android.intent.category.LAUNCHER' />
     </shortcut>
     <shortcut android:shortcutId='shortcut1' android:enabled='true' android:icon='@drawable/shortcut_1' android:shortcutShortLabel='@string/shortcut_short_name_1' android:shortcutLongLabel='@string/shortcut_name_1'>
@@ -8,11 +8,11 @@
         <categories android:name='android.intent.category.LAUNCHER' />
     </shortcut>
     <shortcut android:shortcutId='shortcut2' android:enabled='true' android:icon='@drawable/shortcut_2' android:shortcutShortLabel='@string/shortcut_short_name_2' android:shortcutLongLabel='@string/shortcut_name_2'>
-        <intent android:action='android.intent.action.MAIN' android:targetPackage='gift.dhamma.twa' android:targetClass='gift.dhamma.twa.LauncherActivity' android:data='https://dhamma.gift/pm.php?expand=true' />
+        <intent android:action='android.intent.action.MAIN' android:targetPackage='gift.dhamma.twa' android:targetClass='gift.dhamma.twa.LauncherActivity' android:data='https://dhamma.gift/toc/pm' />
         <categories android:name='android.intent.category.LAUNCHER' />
     </shortcut>
     <shortcut android:shortcutId='shortcut3' android:enabled='true' android:icon='@drawable/shortcut_3' android:shortcutShortLabel='@string/shortcut_short_name_3' android:shortcutLongLabel='@string/shortcut_name_3'>
-        <intent android:action='android.intent.action.MAIN' android:targetPackage='gift.dhamma.twa' android:targetClass='gift.dhamma.twa.LauncherActivity' android:data='https://dhamma.gift/bipm.php?expand=true' />
+        <intent android:action='android.intent.action.MAIN' android:targetPackage='gift.dhamma.twa' android:targetClass='gift.dhamma.twa.LauncherActivity' android:data='https://dhamma.gift/toc/bipm' />
         <categories android:name='android.intent.category.LAUNCHER' />
     </shortcut>
 </shortcuts>

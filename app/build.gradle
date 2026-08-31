@@ -39,7 +39,7 @@ def twaManifest = [
     // - short_name: Shorter string used if |name| is too long.
     // - url: Absolute path of the URL to launch the app with (e.g '/create').
     // - icon: Name of the resource in the drawable folder to use as an icon.
-    shortcuts: [[name:'DG Read', short_name:'DG Read', url:'https://dhamma.gift/read.php', icon:'shortcut_0'],[name:'Dict.Dhamma.gift', short_name:'Dict.Dhamma.', url:'https://dhamma.gift/assets/openDDG.html', icon:'shortcut_1'],[name:'Bhikkhu Patimokkha', short_name:'Bhikkhu Pati', url:'https://dhamma.gift/pm.php?expand=true', icon:'shortcut_2'],[name:'Bhikkhuni Patimokkha', short_name:'Bhikkhuni Pa', url:'https://dhamma.gift/bipm.php?expand=true', icon:'shortcut_3']],
+    shortcuts: [[name:'DG Read', short_name:'DG Read', url:'https://dhamma.gift/toc', icon:'shortcut_0'],[name:'Dict.Dhamma.gift', short_name:'Dict.Dhamma.', url:'https://dhamma.gift/assets/openDDG.html', icon:'shortcut_1'],[name:'Bhikkhu Patimokkha', short_name:'Bhikkhu Pati', url:'https://dhamma.gift/toc/pm', icon:'shortcut_2'],[name:'Bhikkhuni Patimokkha', short_name:'Bhikkhuni Pa', url:'https://dhamma.gift/toc/bipm', icon:'shortcut_3']],
     // The duration of fade out animation in milliseconds to be played when removing splash screen.
     splashScreenFadeOutDuration: 300,
     generatorApp: 'bubblewrap-cli', // Application that generated the Android Project
@@ -57,8 +57,8 @@ android {
         applicationId "gift.dhamma.twa"
         minSdkVersion 21
         targetSdkVersion 36
-        versionCode 6
-        versionName "1.0.2"
+        versionCode 8
+        versionName "1.0.3"
 
         // The name for the application
         resValue "string", "appName", twaManifest.name
@@ -74,7 +74,7 @@ android {
             // The URL the Web Manifest for the Progressive Web App that the TWA points to. This
             // is used by Chrome OS and Meta Quest to open the Web version of the PWA instead of
             // the TWA, as it will probably give a better user experience for non-mobile devices.
-            resValue "string", "webManifestUrl", 'https://dhamma.gift/manifest.php'
+            resValue "string", "webManifestUrl", 'https://dhamma.gift/manifest.json'
         
 
         

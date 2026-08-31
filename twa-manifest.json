@@ -25,7 +25,7 @@
     {
       "name": "DG Read",
       "shortName": "DG Read",
-      "url": "https://dhamma.gift/read.php",
+      "url": "https://dhamma.gift/toc",
       "chosenIconUrl": "https://dhamma.gift/assets/img/maniIcon.png"
     },
     {
@@ -37,18 +37,18 @@
     {
       "name": "Bhikkhu Patimokkha",
       "shortName": "Bhikkhu Pati",
-      "url": "https://dhamma.gift/pm.php?expand=true",
+      "url": "https://dhamma.gift/toc/pm",
       "chosenIconUrl": "https://dhamma.gift/assets/img/monkIcon.png"
     },
     {
       "name": "Bhikkhuni Patimokkha",
       "shortName": "Bhikkhuni Pa",
-      "url": "https://dhamma.gift/bipm.php?expand=true",
+      "url": "https://dhamma.gift/toc/bipm",
       "chosenIconUrl": "https://dhamma.gift/assets/img/nunIcon.png"
     }
   ],
   "generatorApp": "bubblewrap-cli",
-  "webManifestUrl": "https://dhamma.gift/manifest.php",
+  "webManifestUrl": "https://dhamma.gift/manifest.json",
   "fallbackType": "customtabs",
   "alphaDependencies": {
     "enabled": true

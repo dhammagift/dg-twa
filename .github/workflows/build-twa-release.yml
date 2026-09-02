@@ -6,6 +6,9 @@ on:
       - 'twa-v*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -70,7 +73,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            app/build/outputs/apk/release/app-release.apk
+            app/build/outputs/apk/release/*-signed.apk
             app/build/outputs/bundle/release/app-release.aab
           draft: false
           prerelease: false

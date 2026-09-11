@@ -19,14 +19,14 @@
     "path": "/var/www/dg-twa/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "1.0.7",
-  "appVersionCode": 12,
+  "appVersionName": "1.0.8",
+  "appVersionCode": 13,
   "shortcuts": [
     {
-      "name": "Favorites & history",
-      "shortName": "Favorites",
-      "url": "https://dhamma.gift/4as",
-      "chosenIconUrl": "https://dhamma.gift/assets/svg/star.svg"
+      "name": "Table of Contents",
+      "shortName": "TOC",
+      "url": "https://dhamma.gift/toc",
+      "chosenIconUrl": "https://dhamma.gift/assets/img/maniIcon.png"
     },
     {
       "name": "Dictionary",
@@ -35,10 +35,10 @@
       "chosenIconUrl": "https://dhamma.gift/assets/svg/book-letter.svg"
     },
     {
-      "name": "TOC",
-      "shortName": "TOC",
-      "url": "https://dhamma.gift/toc",
-      "chosenIconUrl": "https://dhamma.gift/assets/img/maniIcon.png"
+      "name": "Favorites & history",
+      "shortName": "Favorites",
+      "url": "https://dhamma.gift/4as",
+      "chosenIconUrl": "https://dhamma.gift/assets/svg/star.svg"
     },
     {
       "name": "Memo",

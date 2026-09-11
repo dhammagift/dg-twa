@@ -39,7 +39,7 @@ def twaManifest = [
     // - short_name: Shorter string used if |name| is too long.
     // - url: Absolute path of the URL to launch the app with (e.g '/create').
     // - icon: Name of the resource in the drawable folder to use as an icon.
-    shortcuts: [[name:'Favorites & history', short_name:'Favorites', url:'https://dhamma.gift/4as', icon:'shortcut_0'],[name:'Dictionary', short_name:'Dictionary', url:'https://dhamma.gift/dict', icon:'shortcut_1'],[name:'TOC', short_name:'TOC', url:'https://dhamma.gift/toc', icon:'shortcut_2'],[name:'Memo', short_name:'Memo', url:'https://dhamma.gift/memo', icon:'shortcut_3']],
+    shortcuts: [[name:'Table of Contents', short_name:'TOC', url:'https://dhamma.gift/toc', icon:'shortcut_2'],[name:'Dictionary', short_name:'Dictionary', url:'https://dhamma.gift/dict', icon:'shortcut_1'],[name:'Favorites & history', short_name:'Favorites', url:'https://dhamma.gift/4as', icon:'shortcut_0'],[name:'Memo', short_name:'Memo', url:'https://dhamma.gift/memo', icon:'shortcut_3']],
     // The duration of fade out animation in milliseconds to be played when removing splash screen.
     splashScreenFadeOutDuration: 300,
     generatorApp: 'bubblewrap-cli', // Application that generated the Android Project
@@ -57,8 +57,8 @@ android {
         applicationId "gift.dhamma.twa"
         minSdkVersion 21
         targetSdkVersion 36
-        versionCode 12
-        versionName "1.0.7"
+        versionCode 13
+        versionName "1.0.8"
 
         // The name for the application
         resValue "string", "appName", twaManifest.name

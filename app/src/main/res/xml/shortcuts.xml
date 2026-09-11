@@ -1,3 +1,5 @@
+<!-- Generated on every build by app/build.gradle's generateShorcutsFile task (preBuild.dependsOn),
+     from the `twaManifest.shortcuts` array there — hand edits here get silently overwritten. -->
 <shortcuts xmlns:android='http://schemas.android.com/apk/res/android'>
     <shortcut android:shortcutId='shortcut0' android:enabled='true' android:icon='@drawable/shortcut_0' android:shortcutShortLabel='@string/shortcut_short_name_0' android:shortcutLongLabel='@string/shortcut_name_0'>
         <intent android:action='android.intent.action.MAIN' android:targetPackage='gift.dhamma.twa' android:targetClass='gift.dhamma.twa.LauncherActivity' android:data='https://dhamma.gift/4as' />

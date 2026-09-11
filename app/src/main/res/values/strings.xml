@@ -34,15 +34,9 @@
     
   </string>
 
-  <!-- App shortcuts, kept in sync with configs/manifest.json's "shortcuts" on the web -->
-  <string name="shortcut_short_name_0">Favorites</string>
-  <string name="shortcut_name_0">Favorites &amp; history</string>
-  <string name="shortcut_short_name_1">Dictionary</string>
-  <string name="shortcut_name_1">Dictionary</string>
-  <string name="shortcut_short_name_2">TOC</string>
-  <string name="shortcut_name_2">TOC</string>
-  <string name="shortcut_short_name_3">Memo</string>
-  <string name="shortcut_name_3">Memo</string>
+  <!-- App shortcut labels are NOT defined here — app/build.gradle's defaultConfig block
+       generates shortcut_name_N/shortcut_short_name_N as resValues from the `twaManifest.shortcuts`
+       array on every build, which silently overrides any same-named entry added in this file. -->
 
   <!-- Share Target configuration matching web app's manifest -->
   <string name="shareTarget">

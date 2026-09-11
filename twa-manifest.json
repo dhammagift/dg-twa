@@ -19,8 +19,8 @@
     "path": "/var/www/dg-twa/android.keystore",
     "alias": "android"
   },
-  "appVersionName": "1.0.3",
-  "appVersionCode": 7,
+  "appVersionName": "1.0.6",
+  "appVersionCode": 11,
   "shortcuts": [
     {
       "name": "Favorites & history",

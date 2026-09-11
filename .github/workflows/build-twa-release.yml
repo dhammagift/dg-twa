@@ -2,6 +2,8 @@ name: Build TWA Release
 
 on:
   push:
+    branches:
+      - prod
     tags:
       - 'twa-v*'
   workflow_dispatch:
@@ -69,7 +71,16 @@ jobs:
       - name: List APK files
         run: find app/build/outputs -name "*.apk" -type f
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: twa-build-${{ github.sha }}
+          path: |
+            app/build/outputs/apk/release/*-signed.apk
+            app/build/outputs/bundle/release/app-release.aab
+
       - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: |

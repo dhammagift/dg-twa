@@ -23,28 +23,28 @@
   "appVersionCode": 7,
   "shortcuts": [
     {
-      "name": "DG Read",
-      "shortName": "DG Read",
+      "name": "Favorites & history",
+      "shortName": "Favorites",
+      "url": "https://dhamma.gift/4as",
+      "chosenIconUrl": "https://dhamma.gift/assets/svg/star.svg"
+    },
+    {
+      "name": "Dictionary",
+      "shortName": "Dictionary",
+      "url": "https://dhamma.gift/dict",
+      "chosenIconUrl": "https://dhamma.gift/assets/svg/book-letter.svg"
+    },
+    {
+      "name": "TOC",
+      "shortName": "TOC",
       "url": "https://dhamma.gift/toc",
       "chosenIconUrl": "https://dhamma.gift/assets/img/maniIcon.png"
     },
     {
-      "name": "Dict.Dhamma.gift",
-      "shortName": "Dict.Dhamma.",
-      "url": "https://dhamma.gift/assets/openDDG.html",
-      "chosenIconUrl": "https://dhamma.gift/assets/svg/dpd-logo-dark.svg"
-    },
-    {
-      "name": "Bhikkhu Patimokkha",
-      "shortName": "Bhikkhu Pati",
-      "url": "https://dhamma.gift/toc/pm",
-      "chosenIconUrl": "https://dhamma.gift/assets/img/monkIcon.png"
-    },
-    {
-      "name": "Bhikkhuni Patimokkha",
-      "shortName": "Bhikkhuni Pa",
-      "url": "https://dhamma.gift/toc/bipm",
-      "chosenIconUrl": "https://dhamma.gift/assets/img/nunIcon.png"
+      "name": "Memo",
+      "shortName": "Memo",
+      "url": "https://dhamma.gift/memo",
+      "chosenIconUrl": "https://dhamma.gift/assets/svg/memo.svg"
     }
   ],
   "generatorApp": "bubblewrap-cli",

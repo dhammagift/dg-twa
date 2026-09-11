@@ -34,6 +34,16 @@
     
   </string>
 
+  <!-- App shortcuts, kept in sync with configs/manifest.json's "shortcuts" on the web -->
+  <string name="shortcut_short_name_0">Favorites</string>
+  <string name="shortcut_name_0">Favorites &amp; history</string>
+  <string name="shortcut_short_name_1">Dictionary</string>
+  <string name="shortcut_name_1">Dictionary</string>
+  <string name="shortcut_short_name_2">TOC</string>
+  <string name="shortcut_name_2">TOC</string>
+  <string name="shortcut_short_name_3">Memo</string>
+  <string name="shortcut_name_3">Memo</string>
+
   <!-- Share Target configuration matching web app's manifest -->
   <string name="shareTarget">
     {

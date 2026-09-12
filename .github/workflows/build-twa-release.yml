@@ -98,7 +98,7 @@ jobs:
       # actions/upload-artifact's zip download is broken in mobile browsers (GitHub-side JS/auth
       # quirk, not fixable from here) — a Release asset is a plain direct-download link that works
       # everywhere, so every build (tag or prod-branch push) gets one. A prod-branch push updates
-      # a rolling "prod-latest" pre-release instead of a new tag each time.
+      # a rolling "prod-latest" release instead of a new tag each time.
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
@@ -110,6 +110,6 @@ jobs:
             dict-app/build/outputs/apk/release/dict-dhamma-gift.apk
             dict-app/build/outputs/bundle/release/dict-dhamma-gift.aab
           draft: false
-          prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
+          prerelease: false
           generate_release_notes: ${{ startsWith(github.ref, 'refs/tags/') }}
           token: ${{ secrets.GITHUB_TOKEN }}

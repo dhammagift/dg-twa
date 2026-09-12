@@ -39,7 +39,7 @@ def twaManifest = [
     // - short_name: Shorter string used if |name| is too long.
     // - url: Absolute path of the URL to launch the app with (e.g '/create').
     // - icon: Name of the resource in the drawable folder to use as an icon.
-    shortcuts: [[name:'Favorites & history', short_name:'Favorites', url:'https://dhamma.gift/4as', icon:'shortcut_0'],[name:'Aksharamukha.com', short_name:'Aksharamukha', url:'https://www.aksharamukha.com/converter', icon:'shortcut_1'],[name:'Dharmamitra.org', short_name:'Dharmamitra', url:'https://dharmamitra.org/', icon:'shortcut_2']],
+    shortcuts: [[name:'Favorites & history', short_name:'Favorites', url:'https://dhamma.gift/4as', icon:'shortcut_0'],[name:'Aksharamukha.com', short_name:'Aksharamukha', url:'https://www.aksharamukha.com/converter', icon:'shortcut_1'],[name:'Dharmamitra.org', short_name:'Dharmamitra', url:'https://dharmamitra.org/', icon:'shortcut_2'],[name:'DPD Russian', short_name:'Russian', url:'https://dict.dhamma.gift/ru/', icon:'shortcut_3']],
     // The duration of fade out animation in milliseconds to be played when removing splash screen.
     splashScreenFadeOutDuration: 300,
     generatorApp: 'bubblewrap-cli', // Application that generated the Android Project

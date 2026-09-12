@@ -95,6 +95,18 @@ jobs:
           mv dict-app/build/outputs/apk/release/*-signed.apk dict-app/build/outputs/apk/release/dict-dhamma-gift.apk
           mv dict-app/build/outputs/bundle/release/*.aab dict-app/build/outputs/bundle/release/dict-dhamma-gift.aab
 
+      # action-gh-release only creates a tag that doesn't exist yet — it never moves an existing one,
+      # and it never refreshes published_at on an existing release. So prod-latest kept pointing at
+      # the commit of its very first build, with its original date, while its assets were silently
+      # replaced underneath — which reads on the releases page as "the build produced nothing new".
+      # Delete the release and its tag first so the next step recreates both against the commit that
+      # was actually just built.
+      - name: Reset rolling prod-latest release
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release delete prod-latest --yes --cleanup-tag || true
+
       # actions/upload-artifact's zip download is broken in mobile browsers (GitHub-side JS/auth
       # quirk, not fixable from here) — a Release asset is a plain direct-download link that works
       # everywhere, so every build (tag or prod-branch push) gets one. A prod-branch push updates
@@ -109,6 +121,7 @@ jobs:
             app/build/outputs/bundle/release/dhamma-gift.aab
             dict-app/build/outputs/apk/release/dict-dhamma-gift.apk
             dict-app/build/outputs/bundle/release/dict-dhamma-gift.aab
+          target_commitish: ${{ github.sha }}
           draft: false
           prerelease: ${{ !startsWith(github.ref, 'refs/tags/') }}
           generate_release_notes: ${{ startsWith(github.ref, 'refs/tags/') }}

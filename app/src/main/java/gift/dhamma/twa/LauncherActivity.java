@@ -52,7 +52,7 @@ protected Uri getLaunchingUrl() {
     if (Intent.ACTION_SEND.equals(getIntent().getAction()) && getIntent().getType() != null && getIntent().getType().equals("text/plain")) {
         String sharedText = getIntent().getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
-            uri = Uri.parse("https://dhamma.gift/?q=" + Uri.encode(sharedText));
+            uri = Uri.parse("https://test.dhamma.gift/?q=" + Uri.encode(sharedText));
         }
     }
 

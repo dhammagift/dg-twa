@@ -149,9 +149,24 @@ android {
         resValue "bool", "enableSiteSettingsShortcut", twaManifest.enableSiteSettingsShortcut
         resValue "string", "orientation", twaManifest.orientation
     }
+    // See app/build.gradle for why this exists (same keystore, shared by both modules).
+    def releaseKeystorePath = System.getenv("RELEASE_KEYSTORE_PATH")
+    if (releaseKeystorePath != null) {
+        signingConfigs {
+            release {
+                storeFile file(releaseKeystorePath)
+                storePassword System.getenv("RELEASE_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("RELEASE_KEY_ALIAS")
+                keyPassword System.getenv("RELEASE_KEY_PASSWORD")
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
+            if (releaseKeystorePath != null) {
+                signingConfig signingConfigs.release
+            }
         }
     }
     compileOptions {

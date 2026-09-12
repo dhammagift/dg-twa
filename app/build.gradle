@@ -149,9 +149,29 @@ android {
         resValue "bool", "enableSiteSettingsShortcut", twaManifest.enableSiteSettingsShortcut
         resValue "string", "orientation", twaManifest.orientation
     }
+    // Populated only when RELEASE_KEYSTORE_PATH is set (CI) — a local build without the secret
+    // still works, it just produces an unsigned release build like before, same as any other
+    // module here. jarsigner (not just apksigner) is what actually signs the .aab: the previous
+    // CI step (r0adkll/sign-android-release) only ever touched *.apk in its target directory and
+    // silently left every .aab unsigned — Play Console rejected it with "AAB is not signed".
+    // Signing through Gradle itself covers both outputs from one config, no separate tool needed.
+    def releaseKeystorePath = System.getenv("RELEASE_KEYSTORE_PATH")
+    if (releaseKeystorePath != null) {
+        signingConfigs {
+            release {
+                storeFile file(releaseKeystorePath)
+                storePassword System.getenv("RELEASE_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("RELEASE_KEY_ALIAS")
+                keyPassword System.getenv("RELEASE_KEY_PASSWORD")
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled true
+            if (releaseKeystorePath != null) {
+                signingConfig signingConfigs.release
+            }
         }
     }
     compileOptions {

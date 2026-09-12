@@ -41,6 +41,19 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      # Decoded once, used by both modules' signingConfig (see app/build.gradle) — signs APK *and*
+      # AAB natively through Gradle. The previous approach (r0adkll/sign-android-release) only ever
+      # signed *.apk in its target directory; every .aab shipped unsigned and Play Console rejected
+      # it ("AAB is not signed"). RELEASE_KEYSTORE_PATH etc. are absent for any run without these
+      # secrets (e.g. a fork), and both build.gradle files fall back to an unsigned build in that case.
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/release.keystore"
+          echo "RELEASE_KEYSTORE_PATH=$RUNNER_TEMP/release.keystore" >> "$GITHUB_ENV"
+          echo "RELEASE_KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> "$GITHUB_ENV"
+          echo "RELEASE_KEY_ALIAS=${{ secrets.KEYSTORE_ALIAS }}" >> "$GITHUB_ENV"
+          echo "RELEASE_KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> "$GITHUB_ENV"
+
       - name: Build with Gradle
         run: ./gradlew build -x lint
         env:
@@ -56,43 +69,17 @@ jobs:
         env:
           SKIP_JDK_VERSION_CHECK: true
 
-      - name: Sign APK
-        uses: r0adkll/sign-android-release@v1
-        with:
-          releaseDirectory: app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
-          alias: ${{ secrets.KEYSTORE_ALIAS }}
-          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "36.0.0"
-          SKIP_JDK_VERSION_CHECK: true
+      - name: List APK/AAB files
+        run: find . -path "*/build/outputs/*" \( -name "*.apk" -o -name "*.aab" \) -type f
 
-      # Same keystore/secrets as the main app — two independent apps sharing one signing key
-      # is fine; each still needs its own signing step since the action only signs one directory.
-      - name: Sign Dict APK
-        uses: r0adkll/sign-android-release@v1
-        with:
-          releaseDirectory: dict-app/build/outputs/apk/release
-          signingKeyBase64: ${{ secrets.KEYSTORE_BASE64 }}
-          alias: ${{ secrets.KEYSTORE_ALIAS }}
-          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "36.0.0"
-          SKIP_JDK_VERSION_CHECK: true
-
-      - name: List APK files
-        run: find . -path "*/build/outputs/*" -name "*.apk" -type f
-
-      # Both modules' unsigned/signed outputs already land under distinct module-named
-      # directories (app/... vs dict-app/...) so there's no filename collision, but rename to
+      # Both modules' outputs already land under distinct module-named directories
+      # (app/... vs dict-app/...) so there's no filename collision, but rename to
       # human-readable names for the release page anyway.
       - name: Rename release artifacts
         run: |
-          mv app/build/outputs/apk/release/*-signed.apk app/build/outputs/apk/release/dhamma-gift.apk
+          mv app/build/outputs/apk/release/*.apk app/build/outputs/apk/release/dhamma-gift.apk
           mv app/build/outputs/bundle/release/*.aab app/build/outputs/bundle/release/dhamma-gift.aab
-          mv dict-app/build/outputs/apk/release/*-signed.apk dict-app/build/outputs/apk/release/dict-dhamma-gift.apk
+          mv dict-app/build/outputs/apk/release/*.apk dict-app/build/outputs/apk/release/dict-dhamma-gift.apk
           mv dict-app/build/outputs/bundle/release/*.aab dict-app/build/outputs/bundle/release/dict-dhamma-gift.aab
 
       # actions/upload-artifact's zip download is broken in mobile browsers (GitHub-side JS/auth

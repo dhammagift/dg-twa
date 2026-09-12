@@ -3,7 +3,7 @@
   "host": "dhamma.gift",
   "name": "Dhamma.Gift",
   "launcherName": "Dhamma.Gift",
-  "display": "minimal-ui",
+  "display": "standalone",
   "themeColor": "#1B252F",
   "themeColorDark": "#000000",
   "navigationColor": "#000000",

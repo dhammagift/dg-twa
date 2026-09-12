@@ -107,6 +107,15 @@
             <meta-data android:name="android.support.customtabs.trusted.FALLBACK_STRATEGY"
                 android:value="@string/fallbackType" />
 
+            <!-- "default" = no navigation toolbar at all (site's own manifest.json called this
+                 "minimal-ui" — a small back/forward bar — which this app never actually rendered:
+                 there was no DISPLAY_MODE meta-data here before, so androidbrowserhelper already
+                 defaulted to this. Added explicitly so it's not implicit/easy to lose. The "browser
+                 search bar" some users saw was the Custom Tabs fallback chrome from a stale
+                 assetlinks.json cert fingerprint, not this — fixed separately. -->
+            <meta-data android:name="android.support.customtabs.trusted.DISPLAY_MODE"
+                android:value="default" />
+
             
                 <meta-data
                     android:name="android.support.customtabs.trusted.METADATA_SHARE_TARGET"

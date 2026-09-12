@@ -84,19 +84,22 @@ jobs:
 
       # actions/upload-artifact's zip download is broken in mobile browsers (GitHub-side JS/auth
       # quirk, not fixable from here) — a Release asset is a plain direct-download link that works
-      # everywhere, so every build (tag or prod-branch push) gets one. A prod-branch push updates
-      # a rolling "prod-latest" release instead of a new tag each time.
+      # everywhere, so every build gets one. A push to the `prod` branch specifically updates the
+      # rolling "prod-latest" release; anything else non-tag (workflow_dispatch on a scratch
+      # branch, e.g. for a one-off test.dhamma.gift build) goes to a separate rolling "test-latest"
+      # instead — this used to be "anything non-tag" -> prod-latest, which meant a manual dispatch
+      # on any other branch silently clobbered the real prod release.
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'prod-latest' }}
-          name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || 'Prod (latest build)' }}
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || (github.ref == 'refs/heads/prod' && 'prod-latest' || 'test-latest') }}
+          name: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || (github.ref == 'refs/heads/prod' && 'Prod (latest build)' || format('Test build ({0})', github.ref_name)) }}
           files: |
             app/build/outputs/apk/release/dhamma-gift.apk
             app/build/outputs/bundle/release/dhamma-gift.aab
             dict-app/build/outputs/apk/release/dict-dhamma-gift.apk
             dict-app/build/outputs/bundle/release/dict-dhamma-gift.aab
           draft: false
-          prerelease: false
+          prerelease: ${{ !(startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/prod') }}
           generate_release_notes: ${{ startsWith(github.ref, 'refs/tags/') }}
           token: ${{ secrets.GITHUB_TOKEN }}

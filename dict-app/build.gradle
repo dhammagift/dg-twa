@@ -40,7 +40,7 @@ def twaManifest = [
     // - url: Absolute path of the URL to launch the app with (e.g '/create').
     // - icon: Name of the resource in the drawable folder to use as an icon.
     // Same first two as the Dhamma.Gift app (app/build.gradle), same icons, then the two external tools.
-    shortcuts: [[name:'Table of Contents', short_name:'TOC', url:'https://dhamma.gift/toc', icon:'shortcut_0'],[name:'Favorites & history', short_name:'Favorites', url:'https://dhamma.gift/4as', icon:'shortcut_1'],[name:'Dharmamitra.org', short_name:'Dharmamitra', url:'https://dharmamitra.org/', icon:'shortcut_2'],[name:'Aksharamukha.com', short_name:'Aksharamukha', url:'https://www.aksharamukha.com/converter', icon:'shortcut_3']],
+    shortcuts: [[name:'Table of Contents', short_name:'Table of Contents', url:'https://dhamma.gift/toc', icon:'shortcut_0'],[name:'Favorites & History', short_name:'Favorites & History', url:'https://dhamma.gift/4as', icon:'shortcut_1'],[name:'Dharmamitra.org', short_name:'Dharmamitra', url:'https://dharmamitra.org/', icon:'shortcut_2'],[name:'Aksharamukha.com', short_name:'Aksharamukha', url:'https://www.aksharamukha.com/converter', icon:'shortcut_3']],
     // The duration of fade out animation in milliseconds to be played when removing splash screen.
     splashScreenFadeOutDuration: 300,
     generatorApp: 'bubblewrap-cli', // Application that generated the Android Project

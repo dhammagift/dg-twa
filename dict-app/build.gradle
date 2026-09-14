@@ -21,7 +21,7 @@ plugins {
 }
 
 def twaManifest = [
-    applicationId: 'gift.dhamma.dict.twa',
+    applicationId: 'gift.dhamma.pali',
     hostName: 'dict.dhamma.gift', // The domain being opened in the TWA.
     launchUrl: '/?source=pwa', // The start path for the TWA. Must be relative to the domain.
     name: 'Dict.Dhamma.Gift', // The application name.
@@ -52,9 +52,9 @@ def twaManifest = [
 
 android {
     compileSdkVersion 36
-    namespace "gift.dhamma.dict.twa"
+    namespace "gift.dhamma.pali"
     defaultConfig {
-        applicationId "gift.dhamma.dict.twa"
+        applicationId "gift.dhamma.pali"
         minSdkVersion 21
         targetSdkVersion 36
         versionCode 1

@@ -1,4 +1,4 @@
-package gift.dhamma.dict.twa;
+package gift.dhamma.pali;
 
 public class DelegationService extends
         com.google.androidbrowserhelper.trusted.DelegationService {

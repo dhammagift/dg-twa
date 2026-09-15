@@ -24,19 +24,13 @@
   "shortcuts": [
     {
       "name": "Table of Contents",
-      "shortName": "TOC",
+      "shortName": "Table of Contents",
       "url": "https://dhamma.gift/toc",
       "chosenIconUrl": "https://dhamma.gift/assets/img/maniIcon.png"
     },
     {
-      "name": "Dictionary",
-      "shortName": "Dictionary",
-      "url": "https://dhamma.gift/dict",
-      "chosenIconUrl": "https://dhamma.gift/assets/svg/book-letter.svg"
-    },
-    {
-      "name": "Favorites & history",
-      "shortName": "Favorites",
+      "name": "Favorites & History",
+      "shortName": "Favorites & History",
       "url": "https://dhamma.gift/4as",
       "chosenIconUrl": "https://dhamma.gift/assets/svg/star.svg"
     },
@@ -45,6 +39,12 @@
       "shortName": "Memo",
       "url": "https://dhamma.gift/memo",
       "chosenIconUrl": "https://dhamma.gift/assets/svg/memo.svg"
+    },
+    {
+      "name": "Dictionary",
+      "shortName": "Dictionary",
+      "url": "https://dhamma.gift/dict",
+      "chosenIconUrl": "https://dhamma.gift/assets/svg/book-letter.svg"
     }
   ],
   "generatorApp": "bubblewrap-cli",

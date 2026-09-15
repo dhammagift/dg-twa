@@ -21,4 +21,6 @@
     <color name="success">#198754</color>
     <color name="theme_color">#1B252F</color>
     <color name="background_color">#2E3E50</color>
+    <!-- Adaptive launcher icon background (mipmap-anydpi-v26/ic_launcher.xml): the dictionary's dark page. -->
+    <color name="ic_launcher_background">#111111</color>
 </resources>

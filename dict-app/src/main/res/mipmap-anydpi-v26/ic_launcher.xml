@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Adaptive launcher icon (Android 8+). Without it the launcher wraps the legacy square
+     mipmap-*/ic_launcher.png into its own shape on a white plate, which shows as a white circle
+     around the dark icon when it is tapped. Background = the dictionary's dark page (#111111),
+     foreground = the pāḷi mark on transparent, sized to stay inside the mask's safe zone;
+     monochrome is used for themed icons (Android 13+). Legacy PNGs stay for Android 7 and older. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+    <monochrome android:drawable="@mipmap/ic_launcher_monochrome" />
+</adaptive-icon>

@@ -21,4 +21,7 @@
     <color name="success">#198754</color>
     <color name="theme_color">#1B252F</color>
     <color name="background_color">#2E3E50</color>
+    <!-- Adaptive launcher icon background (mipmap-anydpi-v26/ic_launcher.xml) — the icon's light
+         plate; change it here to recolor the launcher icon, the octagon layer is transparent. -->
+    <color name="ic_launcher_background">#F5F5F5</color>
 </resources>

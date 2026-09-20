@@ -1,9 +1,14 @@
 name: Build TWA Release
 
 on:
+  # A tag builds. Run workflow builds. A push does not.
+  #
+  # Every push to main used to build AND publish: the Create Release step below
+  # refreshes the rolling "latest" release on each run, so a one-line fix republished the APK
+  # and the AAB. Work in progress does not need a build; it needs one when
+  # someone asks, and that is what Run workflow is (owner, 2026-09-20: "не любой же пуш" — and,
+  # on a README fix, "зачем сборка"). Same change as dg-app-full's build-app.yml.
   push:
-    branches:
-      - main
     tags:
       - 'twa-v*'
   workflow_dispatch:

@@ -7,6 +7,12 @@ on:
     tags:
       - 'twa-v*'
   workflow_dispatch:
+    inputs:
+      publish_dict:
+        description: 'Upload the DICTIONARY app (gift.dhamma.pali) to the Play internal track — testers only, production still needs a promote. Bump dict-app versionCode first: Play refuses a code it has already seen.'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -105,3 +111,54 @@ jobs:
           prerelease: ${{ !(startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main') }}
           generate_release_notes: ${{ startsWith(github.ref, 'refs/tags/') }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Dormant until the secret exists: no service account, no upload, and the job summary says
+      # so — a green tick that uploaded nothing is the worst thing a release pipeline can do.
+      # The same service account as dg-app-full; it already holds rights on this app. Secrets are
+      # per-repository, so either an organisation secret shared with this repo, or the same JSON
+      # pasted here. Setup: dg-app-full/docs/ANDROID_RELEASE.md.
+      - name: Is the Play service account there?
+        id: play
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_dict
+        env:
+          PLAY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          if [ -n "$PLAY_JSON" ]; then
+            echo "have=yes" >> "$GITHUB_OUTPUT"
+            echo "service account present"
+          else
+            echo "have=no" >> "$GITHUB_OUTPUT"
+            echo "::notice::PLAY_SERVICE_ACCOUNT_JSON is not set - nothing was uploaded to Play."
+            {
+              echo "### Play upload: nothing happened"
+              echo ""
+              echo "Missing secret \`PLAY_SERVICE_ACCOUNT_JSON\` (organisation secret, or per-repository)."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # ONLY dict-app. The other module in this repository declares gift.dhamma.twa, which is the
+      # package dg-app-full now ships (the Capacitor app replaced the TWA listing) — two
+      # repositories able to push one package means finding out in the console whose versionCode
+      # won. Its AAB stays a GitHub release asset and nothing more.
+      #
+      # Deliberately not on a tag, unlike dg-app-full: a `twa-v*` tag here has always meant "cut a
+      # GitHub release", and quietly giving an existing tag a second, store-facing meaning is how
+      # someone ships something they did not mean to. Tick the box.
+      - name: Upload the dictionary app to Google Play
+        if: steps.play.outputs.have == 'yes'
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: gift.dhamma.pali
+          releaseFiles: dict-app/build/outputs/bundle/release/dict-dhamma-gift.aab
+          track: internal
+          status: completed
+
+      - name: Say what went to Play
+        if: success() && steps.play.outputs.have == 'yes'
+        run: |
+          {
+            echo "### Dictionary app uploaded"
+            echo ""
+            echo "\`gift.dhamma.pali\` is on the **internal** track. Production needs a promote in the Play Console."
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -74,46 +74,97 @@ jobs:
       # gift.dhamma.pali lists every track's releases, each with its own versionCodes; the highest
       # one seen across ALL tracks (Play's own rule — codes are unique per app, not per track) plus
       # one is what this build gets. A brand new app with no releases yet answers with no tracks
-      # data at all, which the node one-liner reads as max 0, so the first-ever upload still gets a
-      # real versionCode (1) instead of erroring on an empty list.
+      # data at all, which the script reads as max 0, so the first-ever upload still gets a real
+      # versionCode (1) instead of erroring on an empty list.
+      #
+      # The token is a plain RFC 7523 JWT-bearer exchange against oauth2.googleapis.com, signed
+      # with the service account's own private key — not google-github-actions/auth's
+      # token_format: access_token, which (run 38's actual failure) calls the IAM Service Account
+      # Credentials API to mint the token and errors with SERVICE_DISABLED when that API is off for
+      # the GCP project, a console setting nobody had asked to change. r0adkll/upload-google-play
+      # never needed it either — it authenticates the AAB upload below with this same JSON directly.
+      #
       # `secrets` cannot be read inside a step's `if:` (that alone invalidates the whole workflow
-      # file — GitHub rejects it before scheduling a single job, "startup_failure" with zero jobs
-      # to show for it, runs 35/36). continue-on-error stands in for it: an empty secret makes
-      # auth fail, not the workflow, and the next step's own `if:` reads outcome/access_token
-      # instead — the same two-step shape the existing "Is the Play service account there?" check
-      # below uses (env + a shell `[ -n ... ]`, never `secrets` in `if:`).
-      - name: Auth to Google Play (for the versionCode lookup below)
-        id: gauth
-        if: github.event_name == 'workflow_dispatch' && inputs.publish_dict
-        continue-on-error: true
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          token_format: access_token
-
+      # file — GitHub rejects it before scheduling a single job, "startup_failure" with zero jobs to
+      # show for it, runs 35/36) — hence env: here and a plain `if: github.event_name == ...`.
       - name: Bump dict-app versionCode past what Play has already seen
-        if: steps.gauth.outcome == 'success' && steps.gauth.outputs.access_token != ''
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_dict
+        env:
+          PLAY_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
         run: |
-          set -euo pipefail
-          TOKEN="${{ steps.gauth.outputs.access_token }}"
-          PKG=gift.dhamma.pali
-          EDIT_ID=$(curl -sS -X POST -H "Authorization: Bearer $TOKEN" \
-            "https://androidpublisher.googleapis.com/androidpublisher/v3/applications/$PKG/edits" \
-            | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>console.log(JSON.parse(d).id))')
-          MAX=$(curl -sS -H "Authorization: Bearer $TOKEN" \
-            "https://androidpublisher.googleapis.com/androidpublisher/v3/applications/$PKG/edits/$EDIT_ID/tracks" \
-            | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{
-                const tracks=JSON.parse(d).tracks||[];
-                let max=0;
-                for (const t of tracks) for (const r of (t.releases||[])) for (const v of (r.versionCodes||[]))
-                  max=Math.max(max, parseInt(v,10)||0);
-                console.log(max);
-              })')
-          curl -sS -X DELETE -H "Authorization: Bearer $TOKEN" \
-            "https://androidpublisher.googleapis.com/androidpublisher/v3/applications/$PKG/edits/$EDIT_ID" > /dev/null || true
-          NEXT=$((MAX + 1))
-          echo "Play's highest known gift.dhamma.pali versionCode is $MAX; building $NEXT"
-          sed -i "s/versionCode [0-9]\+/versionCode $NEXT/" dict-app/build.gradle
+          if [ -z "$PLAY_JSON" ]; then
+            echo "no PLAY_SERVICE_ACCOUNT_JSON — leaving dict-app/build.gradle's versionCode as is"
+            exit 0
+          fi
+          node <<'NODE'
+          const crypto = require('crypto');
+          const https = require('https');
+          const fs = require('fs');
+
+          const key = JSON.parse(process.env.PLAY_JSON);
+          const now = Math.floor(Date.now() / 1000);
+          const b64url = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
+          const unsigned = b64url({ alg: 'RS256', typ: 'JWT' }) + '.' + b64url({
+            iss: key.client_email,
+            scope: 'https://www.googleapis.com/auth/androidpublisher',
+            aud: 'https://oauth2.googleapis.com/token',
+            iat: now,
+            exp: now + 3600,
+          });
+          const jwt = unsigned + '.' + crypto.createSign('RSA-SHA256').update(unsigned).sign(key.private_key).toString('base64url');
+
+          function request(options, body) {
+            return new Promise((resolve, reject) => {
+              const req = https.request(options, (res) => {
+                let data = '';
+                res.on('data', (c) => { data += c; });
+                res.on('end', () => resolve({ status: res.statusCode, body: data }));
+              });
+              req.on('error', reject);
+              if (body) req.write(body);
+              req.end();
+            });
+          }
+          function api(method, path, token) {
+            return request({ hostname: 'androidpublisher.googleapis.com', path, method, headers: { Authorization: 'Bearer ' + token } });
+          }
+          function fail(step, res) {
+            console.error(`${step} failed (HTTP ${res.status}):`, res.body);
+            process.exit(1);
+          }
+
+          (async () => {
+            const form = new URLSearchParams({
+              grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+              assertion: jwt,
+            }).toString();
+            const tokenRes = await request(
+              { hostname: 'oauth2.googleapis.com', path: '/token', method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Content-Length': Buffer.byteLength(form) } },
+              form);
+            const token = JSON.parse(tokenRes.body || '{}').access_token;
+            if (!token) fail('token exchange', tokenRes);
+
+            const pkg = 'gift.dhamma.pali';
+            const editRes = await api('POST', `/androidpublisher/v3/applications/${pkg}/edits`, token);
+            const edit = JSON.parse(editRes.body || '{}');
+            if (!edit.id) fail('opening an edit', editRes);
+
+            const tracksRes = await api('GET', `/androidpublisher/v3/applications/${pkg}/edits/${edit.id}/tracks`, token);
+            if (tracksRes.status >= 300) fail('listing tracks', tracksRes);
+            const tracks = JSON.parse(tracksRes.body || '{}').tracks || [];
+            let max = 0;
+            for (const t of tracks) for (const r of (t.releases || [])) for (const v of (r.versionCodes || []))
+              max = Math.max(max, parseInt(v, 10) || 0);
+
+            await api('DELETE', `/androidpublisher/v3/applications/${pkg}/edits/${edit.id}`, token);
+
+            const next = max + 1;
+            console.log(`Play's highest known ${pkg} versionCode is ${max}; building ${next}`);
+            const gradle = fs.readFileSync('dict-app/build.gradle', 'utf8');
+            fs.writeFileSync('dict-app/build.gradle', gradle.replace(/versionCode \d+/, `versionCode ${next}`));
+          })().catch((e) => { console.error(e); process.exit(1); });
+          NODE
 
       - name: Build with Gradle
         run: ./gradlew build -x lint

@@ -76,9 +76,16 @@ jobs:
       # one is what this build gets. A brand new app with no releases yet answers with no tracks
       # data at all, which the node one-liner reads as max 0, so the first-ever upload still gets a
       # real versionCode (1) instead of erroring on an empty list.
+      # `secrets` cannot be read inside a step's `if:` (that alone invalidates the whole workflow
+      # file — GitHub rejects it before scheduling a single job, "startup_failure" with zero jobs
+      # to show for it, runs 35/36). continue-on-error stands in for it: an empty secret makes
+      # auth fail, not the workflow, and the next step's own `if:` reads outcome/access_token
+      # instead — the same two-step shape the existing "Is the Play service account there?" check
+      # below uses (env + a shell `[ -n ... ]`, never `secrets` in `if:`).
       - name: Auth to Google Play (for the versionCode lookup below)
         id: gauth
-        if: github.event_name == 'workflow_dispatch' && inputs.publish_dict && secrets.PLAY_SERVICE_ACCOUNT_JSON != ''
+        if: github.event_name == 'workflow_dispatch' && inputs.publish_dict
+        continue-on-error: true
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}

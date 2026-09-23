@@ -145,6 +145,23 @@
 </intent-filter>
 <!-- END SHARING INTENT-FILTER -->
 
+<!-- BEGIN TEXT-SELECTION INTENT-FILTER -->
+<!-- The same shortcut as "Share -> Dict.Dhamma.Gift", one chooser shorter: select a word in any
+     app and the app sits in the text selection toolbar (or its overflow) next to Copy/Translate.
+     The label Android prints is this activity's own (android:label above, i.e. launcherName).
+     android:priority="1000": the platform appends these items in queryIntentActivities order,
+     which for activities is RESOLVE_PRIORITY_SORTER — priority first, then system-before-user,
+     and only then the package name alphabetically; at the default 0 the item sorted below every
+     com.* app. text/* rather than text/plain: rich-text editors send text/html, and those are
+     the apps where a text/plain filter never shows up. LauncherActivity turns the selected text
+     into the site's ?q= search. -->
+<intent-filter android:priority="1000">
+    <action android:name="android.intent.action.PROCESS_TEXT" />
+    <category android:name="android.intent.category.DEFAULT" />
+    <data android:mimeType="text/*" />
+</intent-filter>
+<!-- END TEXT-SELECTION INTENT-FILTER -->
+
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT" />

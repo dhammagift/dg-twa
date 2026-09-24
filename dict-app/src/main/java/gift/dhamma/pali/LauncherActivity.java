@@ -15,6 +15,7 @@
  */
 package gift.dhamma.pali;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -68,6 +69,20 @@ protected Uri getLaunchingUrl() {
         String sharedText = getIntent().getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
             uri = Uri.parse("https://dict.dhamma.gift/?q=" + Uri.encode(sharedText));
+        }
+    }
+
+    // A query from Android's system search: "Search in apps" (res/xml/searchable.xml), or a tapped
+    // suggestion from DgDictSuggestProvider. A suggestion already carries the full ?q= URL, so only
+    // the ACTION_SEARCH case has to be turned into one — a submitted query arrives as an extra and
+    // no data, exactly like a text selection above, and the site owns the lookup either way.
+    if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+        String query = getIntent().getStringExtra(SearchManager.QUERY);
+        if (query != null && !query.trim().isEmpty()) {
+            // Remembered here rather than in the provider: this is the only place that sees a query
+            // the reader meant, and the provider offers these back as its own recent list.
+            DgDictSuggestProvider.rememberQuery(this, query);
+            uri = Uri.parse("https://dict.dhamma.gift/?q=" + Uri.encode(query));
         }
     }
 

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Makes the dictionary an answerer of Android's system search.
+
+    What each attribute buys:
+      android:includeInGlobalSearch="true"  the app is offered in "Search in apps" (the system
+                                            search settings/side panel), which is what puts its
+                                            words into the search UI at all.
+      android:searchSuggestAuthority        the provider that answers with words. It is the
+                                            authority declared for DgDictSuggestProvider; a typo
+                                            here silently means "no suggestions".
+      android:searchSuggestIntentAction     tapping a suggestion VIEWs it. The provider puts the
+                                            full https://dict.dhamma.gift/?q=<word> in
+                                            SUGGEST_COLUMN_INTENT_DATA, so that URL is what
+                                            LauncherActivity receives — the same ?q= path a shared
+                                            word takes, and the site does the lookup.
+      android:searchSuggestSelection=" ?"   the framework's way of saying "the query arrives as
+                                            selectionArgs[0]"; DgDictSuggestProvider accepts either
+                                            form.
+      android:searchSuggestThreshold="1"    suggestions start after the first character.
+      android:queryAfterZeroResults="true"  keep asking even when the previous prefix matched
+                                            nothing (typing "atthā" after "att" must still work).
+
+    android:label is the launcher name the app already shows, and the hint is the site's own idea of
+    what to type: a Pali word or the beginning of one.
+-->
+<searchable xmlns:android="http://schemas.android.com/apk/res/android"
+    android:label="@string/launcherName"
+    android:hint="@string/search_hint"
+    android:searchSettingsDescription="@string/search_settings_description"
+    android:searchSuggestAuthority="gift.dhamma.pali.suggest"
+    android:searchSuggestIntentAction="android.intent.action.VIEW"
+    android:searchSuggestSelection=" ?"
+    android:searchSuggestThreshold="1"
+    android:includeInGlobalSearch="true"
+    android:queryAfterZeroResults="true" />

@@ -46,6 +46,13 @@
             android:name="asset_statements"
             android:resource="@string/assetStatements" />
 
+        <!-- The searchable activity for a query that arrives without a component — this is the
+             counterpart android.app.searchable (declared on LauncherActivity) needs to be reachable
+             at all, and it is what "Search in apps" resolves for this package. -->
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value="gift.dhamma.pali.LauncherActivity" />
+
         
             <meta-data
                 android:name="web_manifest_url"
@@ -162,6 +169,22 @@
 </intent-filter>
 <!-- END TEXT-SELECTION INTENT-FILTER -->
 
+<!-- BEGIN SYSTEM-SEARCH INTENT-FILTER -->
+<!-- Android's system search asks this app for words (res/xml/searchable.xml declares the
+     provider and the "Search in apps" flag) and delivers a submitted query as ACTION_SEARCH.
+     LauncherActivity turns that query into https://dict.dhamma.gift/?q=…, so the site's own
+     lookup answers it — the same path a shared word and the tile take.
+     The android.app.searchable meta-data is what binds the searchable description to THIS
+     activity: without it the system has a provider and no activity to hand the query to. -->
+<intent-filter>
+    <action android:name="android.intent.action.SEARCH" />
+    <category android:name="android.intent.category.DEFAULT" />
+</intent-filter>
+<meta-data
+    android:name="android.app.searchable"
+    android:resource="@xml/searchable" />
+<!-- END SYSTEM-SEARCH INTENT-FILTER -->
+
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -191,6 +214,36 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
+
+        <!-- BEGIN SYSTEM-SEARCH PROVIDER -->
+        <!-- Answers the system search with dictionary words (see DgDictSuggestProvider). exported
+             is required — the search UI is another process — and the provider serves a public word
+             list, so no permission guards it: it exposes no user data, only the words the site
+             itself publishes. The authority is repeated in res/xml/searchable.xml; the two must
+             match or suggestions silently never appear. -->
+        <provider
+            android:name=".DgDictSuggestProvider"
+            android:authorities="gift.dhamma.pali.suggest"
+            android:exported="true" />
+        <!-- END SYSTEM-SEARCH PROVIDER -->
+
+        <!-- BEGIN QUICK SETTINGS TILE -->
+        <!-- The dictionary in the shade (DgDictTileService). exported="true" is required: the
+             system's Quick Settings process binds this service, and without the flag the tile could
+             never be added. BIND_QUICK_SETTINGS_TILE is a signature permission held by the platform,
+             so only the system can bind it. The tile is invisible until the reader drags it into the
+             panel — Android's rule for every app. -->
+        <service
+            android:name=".DgDictTileService"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/tile_label"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+        <!-- END QUICK SETTINGS TILE -->
 
         <service
             android:name=".DelegationService"

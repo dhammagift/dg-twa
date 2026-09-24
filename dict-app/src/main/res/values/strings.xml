@@ -49,4 +49,13 @@
       }
     }
   </string>
+
+  <!-- System search (res/xml/searchable.xml + DgDictSuggestProvider). The hint is what the search
+       box shows before anything is typed, and the settings description is the line Android prints
+       next to the app in "Search in apps". values-ru/strings.xml carries the Russian. -->
+  <string name="search_hint">Pali word or the start of one</string>
+  <string name="search_settings_description">Words from the Pali dictionary</string>
+
+  <!-- The Quick Settings tile (DgDictTileService): its name in the tile picker and in the shade. -->
+  <string name="tile_label">Dictionary</string>
 </resources>

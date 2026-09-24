@@ -4,5 +4,4 @@
 <resources>
   <string name="search_hint">Слово на пали или его начало</string>
   <string name="search_settings_description">Слова из палийского словаря</string>
-  <string name="tile_label">Словарь</string>
 </resources>

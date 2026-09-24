@@ -55,7 +55,7 @@
        next to the app in "Search in apps". values-ru/strings.xml carries the Russian. -->
   <string name="search_hint">Pali word or the start of one</string>
   <string name="search_settings_description">Words from the Pali dictionary</string>
-
-  <!-- The Quick Settings tile (DgDictTileService): its name in the tile picker and in the shade. -->
-  <string name="tile_label">Dictionary</string>
+  <!-- The Quick Settings tile carries NO label of its own: it uses the app's name
+       (@string/launcherName, i.e. "Dict.Dhamma.Gift") so the shade shows one name, not a title plus
+       a subtitle. See the service in AndroidManifest.xml. -->
 </resources>

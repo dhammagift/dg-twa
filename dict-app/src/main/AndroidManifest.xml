@@ -235,12 +235,14 @@
              panel — Android's rule for every app.
              The icon is the brand mark (drawable/ic_tile, the same traced glyph dg-app-full uses),
              not @mipmap/ic_launcher: a Quick Settings tile draws a single monochrome drawable, and
-             an adaptive launcher icon shows up there as an empty plate. -->
+             an adaptive launcher icon shows up there as an empty plate.
+             The label is the app's own name, not a second one: the tile sits under the app's name in
+             the shade, so "Dictionary" above "Dict.Dhamma.Gift" was one label too many. -->
         <service
             android:name=".DgDictTileService"
             android:exported="true"
             android:icon="@drawable/ic_tile"
-            android:label="@string/tile_label"
+            android:label="@string/launcherName"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />

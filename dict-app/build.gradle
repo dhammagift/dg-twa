@@ -14,6 +14,27 @@
  * limitations under the License.
  */
 
+/*
+ * SUPERSEDED (2026-09-24): the dictionary app is now a Capacitor app in dg-app-full/dict
+ * (`gift.dhamma.pali`, versionName 2.0.0 / versionCode 3 — the first code after this TWA's 2).
+ *
+ * This module is kept only so the migration is reversible and so the history of what was shipped
+ * stays readable. It is NOT the source of truth any more: do not bump it, do not expect changes
+ * here to reach readers.
+ *
+ * Why it was replaced (owner's reports, all of them properties of a Trusted Web Activity rather
+ * than bugs in this file):
+ *   - "не работает стандалон" — a TWA runs in Chrome's Custom Tab, which follows Chrome's display
+ *     mode and shows Chrome's own chrome;
+ *   - "бургер меню... улетает" — the dictionary's bottom-sheet panel is positioned against a
+ *     viewport Chrome resizes as its URL bar hides and shows;
+ *   - "нет истории в шорткатах" — a web manifest's shortcuts are static and a TWA cannot reach
+ *     ShortcutManager at all.
+ *
+ * Retiring this from the Play listing (the CI job still uploads it) is a separate decision and has
+ * not been made.
+ */
+
 import groovy.xml.MarkupBuilder
 
 plugins {

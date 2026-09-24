@@ -232,11 +232,14 @@
              system's Quick Settings process binds this service, and without the flag the tile could
              never be added. BIND_QUICK_SETTINGS_TILE is a signature permission held by the platform,
              so only the system can bind it. The tile is invisible until the reader drags it into the
-             panel — Android's rule for every app. -->
+             panel — Android's rule for every app.
+             The icon is the brand mark (drawable/ic_tile, the same traced glyph dg-app-full uses),
+             not @mipmap/ic_launcher: a Quick Settings tile draws a single monochrome drawable, and
+             an adaptive launcher icon shows up there as an empty plate. -->
         <service
             android:name=".DgDictTileService"
             android:exported="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@drawable/ic_tile"
             android:label="@string/tile_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>

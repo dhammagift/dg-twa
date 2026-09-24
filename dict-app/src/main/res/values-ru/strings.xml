@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Russian strings for the entries in values/strings.xml that a reader actually sees: the system
-     search hint, the line "Search in apps" prints next to the app, and the Quick Settings tile. -->
-<resources>
-  <string name="search_hint">Слово на пали или его начало</string>
-  <string name="search_settings_description">Слова из палийского словаря</string>
-</resources>

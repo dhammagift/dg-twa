@@ -15,7 +15,6 @@
  */
 package gift.dhamma.pali;
 
-import android.app.SearchManager;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -46,19 +45,6 @@ public class LauncherActivity
             if (selected != null && selected.length() > 0) {
                 intent.setData(Uri.parse("https://dict.dhamma.gift/?q=" + Uri.encode(selected.toString())));
             }
-        } else if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            // A query from Android's system search ("Search in apps", res/xml/searchable.xml) or a
-            // tapped suggestion from DgDictSuggestProvider. Same trap as the selection above: the
-            // query arrives as an extra with NO data, and the base class only relaunches the TWA
-            // when the intent carries data — so the URL is set here, before super.onCreate reads it.
-            // A suggestion already carries the full ?q= URL and needs nothing.
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            if (query != null && !query.trim().isEmpty()) {
-                // Remembered here rather than in the provider: this is the only place that sees a
-                // query the reader meant, and the provider offers these back as its recent list.
-                DgDictSuggestProvider.rememberQuery(this, query);
-                intent.setData(Uri.parse("https://dict.dhamma.gift/?q=" + Uri.encode(query)));
-            }
         }
         super.onCreate(savedInstanceState);
         // Setting an orientation crashes the app due to the transparent background on Android 8.0
@@ -84,10 +70,6 @@ protected Uri getLaunchingUrl() {
             uri = Uri.parse("https://dict.dhamma.gift/?q=" + Uri.encode(sharedText));
         }
     }
-
-    // ACTION_SEARCH and a tapped suggestion need nothing here: the first gets its data set in
-    // onCreate (before the base class decides whether to relaunch), the second arrives with the
-    // full ?q= URL in its data and super.getLaunchingUrl() already returns it.
 
     return uri;
 }
